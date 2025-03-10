@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Academic Week Widget</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .widget {
+      max-width: 600px;
+      max-height: 300px;
+      padding: 10px;
+      background-color: #f5f5f5;
+    }
+
+    .header {
+      background-color: #000054;
+      color: #fff;
+      padding: 15px 20px;
+      font-weight: bold;
+      font-size: 20px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 10px;
+      border-radius: 4px;
+    }
+
+    .today-label {
+      font-weight: bold;
+    }
+
+    .content {
+      display: flex;
+      width: 100%;
+      gap: 10px;
+      /* Space between the week and semester boxes */
+    }
+
+    .week-block {
+      flex: 1;
+      background-color: #e61e2a;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 10px;
+      font-size: 36px;
+      font-weight: bold;
+      white-space: nowrap;
+      border-radius: 4px;
+    }
+
+    .semester-block {
+      flex: 1;
+      background-color: #dbdbdb;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 10px;
+      font-size: 36px;
+      font-weight: bold;
+      white-space: nowrap;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="widget">
+    <div class="header" id="dateDisplay">
+      Loading...
+    </div>
+    <div class="content">
+      <div class="week-block" id="weekDisplay">
+        Week -
+      </div>
+      <div class="semester-block" id="semesterDisplay">
+        Semester -
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Academic calendar data
+    const calendarData = [{
+        semester: 1,
+        learning_week: 0,
+        week_starting: "Monday, February 24, 2025"
+      },
+      {
+        semester: 1,
+        learning_week: 1,
+        week_starting: "Monday, March 3, 2025"
+      },
+      {
+        semester: 1,
+        learning_week: 2,
+        week_starting: "Monday, March 10, 2025"
+      },
+      {
+        semester: 1,
+        learning_week: 3,
+        week_starting: "Monday, March 17, 2025"
+      },
+      {
+        semester: 1,
+        learning_week: 4,
+        week_starting: "Monday, March 24, 2025"
+      },
+      {
+        semester: 1,
+        learning_week: 5,
+        week_starting: "Monday, March 31, 2025"
+      },
+      {
+        semester: 1,
+        learning_week: 6,
+        week_starting: "Monday, April 7, 2025"
+      },
+      {
+        semester: 1,
+        learning_week: 7,
+        week_starting: "Monday, April 14, 2025"
+      },
+      {
+        semester: 1,
+        learning_week: 8,
+        week_starting: "Monday, April 21, 2025"
+      },
+      {
+        semester: 1,
+        learning_week: 9,
+        week_starting: "Monday, April 28, 2025"
+      },
+      {
+        semester: 1,
+        learning_week: 10,
+        week_starting: "Monday, May 5, 2025"
+      },
+      {
+        semester: 1,
+        learning_week: 11,
+        week_starting: "Monday, May 12, 2025"
+      },
+      {
+        semester: 1,
+        learning_week: 12,
+        week_starting: "Monday, May 19, 2025"
+      },
+      {
+        semester: 1,
+        learning_week: 13,
+        week_starting: "Monday, May 26, 2025"
+      },
+      {
+        semester: 1,
+        learning_week: 14,
+        week_starting: "Monday, June 2, 2025"
+      },
+      {
+        semester: 1,
+        learning_week: 15,
+        week_starting: "Monday, June 9, 2025"
+      },
+      {
+        semester: 1,
+        learning_week: 16,
+        week_starting: "Monday, June 16, 2025"
+      },
+      {
+        semester: 2,
+        learning_week: 0,
+        week_starting: "Monday, June 23, 2025"
+      },
+      {
+        semester: 2,
+        learning_week: 1,
+        week_starting: "Monday, June 30, 2025"
+      },
+      {
+        semester: 2,
+        learning_week: 2,
+        week_starting: "Monday, July 7, 2025"
+      },
+      {
+        semester: 2,
+        learning_week: 3,
+        week_starting: "Monday, July 14, 2025"
+      },
+      {
+        semester: 2,
+        learning_week: 4,
+        week_starting: "Monday, July 21, 2025"
+      },
+      {
+        semester: 2,
+        learning_week: 5,
+        week_starting: "Monday, July 28, 2025"
+      },
+      {
+        semester: 2,
+        learning_week: 6,
+        week_starting: "Monday, August 4, 2025"
+      },
+      {
+        semester: 2,
+        learning_week: 7,
+        week_starting: "Monday, August 11, 2025"
+      },
+      {
+        semester: 2,
+        learning_week: 8,
+        week_starting: "Monday, August 18, 2025"
+      },
+      {
+        semester: 2,
+        learning_week: 9,
+        week_starting: "Monday, August 25, 2025"
+      },
+      {
+        semester: 2,
+        learning_week: 10,
+        week_starting: "Monday, September 1, 2025"
+      },
+      {
+        semester: 2,
+        learning_week: 11,
+        week_starting: "Monday, September 8, 2025"
+      },
+      {
+        semester: 2,
+        learning_week: 12,
+        week_starting: "Monday, September 15, 2025"
+      },
+      {
+        semester: 2,
+        learning_week: 13,
+        week_starting: "Monday, September 22, 2025"
+      },
+      {
+        semester: 2,
+        learning_week: 14,
+        week_starting: "Monday, September 29, 2025"
+      },
+      {
+        semester: 2,
+        learning_week: 15,
+        week_starting: "Monday, October 6, 2025"
+      },
+      {
+        semester: 2,
+        learning_week: 16,
+        week_starting: "Monday, October 13, 2025"
+      },
+      {
+        semester: 3,
+        learning_week: 0,
+        week_starting: "Monday, October 20, 2025"
+      },
+      {
+        semester: 3,
+        learning_week: 1,
+        week_starting: "Monday, October 27, 2025"
+      },
+      {
+        semester: 3,
+        learning_week: 2,
+        week_starting: "Monday, November 3, 2025"
+      },
+      {
+        semester: 3,
+        learning_week: 3,
+        week_starting: "Monday, November 10, 2025"
+      },
+      {
+        semester: 3,
+        learning_week: 4,
+        week_starting: "Monday, November 17, 2025"
+      },
+      {
+        semester: 3,
+        learning_week: 5,
+        week_starting: "Monday, November 24, 2025"
+      },
+      {
+        semester: 3,
+        learning_week: 6,
+        week_starting: "Monday, December 1, 2025"
+      },
+      {
+        semester: 3,
+        learning_week: 7,
+        week_starting: "Monday, December 8, 2025"
+      },
+      {
+        semester: 3,
+        learning_week: 8,
+        week_starting: "Monday, December 15, 2025"
+      },
+      {
+        semester: 3,
+        learning_week: 9,
+        week_starting: "Monday, December 22, 2025"
+      },
+      {
+        semester: 3,
+        learning_week: 10,
+        week_starting: "Monday, December 29, 2025"
+      },
+      {
+        semester: 3,
+        learning_week: 11,
+        week_starting: "Monday, January 5, 2026"
+      },
+      {
+        semester: 3,
+        learning_week: 12,
+        week_starting: "Monday, January 12, 2026"
+      },
+      {
+        semester: 3,
+        learning_week: 13,
+        week_starting: "Monday, January 19, 2026"
+      },
+      {
+        semester: 3,
+        learning_week: 14,
+        week_starting: "Monday, January 26, 2026"
+      },
+      {
+        semester: 3,
+        learning_week: 15,
+        week_starting: "Monday, February 2, 2026"
+      },
+      {
+        semester: 3,
+        learning_week: 16,
+        week_starting: "Monday, February 9, 2026"
+      },
+      {
+        semester: 3,
+        learning_week: 17,
+        week_starting: "Monday, February 16, 2026"
+      }
+    ];
+
+    function updateCalendarInfo() {
+      // For testing purposes, you can use a specific date
+      // const currentDate = new Date("March 10, 2025");
+      const currentDate = new Date();
+      const dateDisplay = document.getElementById('dateDisplay');
+      const weekDisplay = document.getElementById('weekDisplay');
+      const semesterDisplay = document.getElementById('semesterDisplay');
+      // Format date for display - matching "Mon, March 10, 2025" format
+      const options = {
+        weekday: 'short',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+      };
+      const formattedDate = currentDate.toLocaleDateString('en-US', options);
+      dateDisplay.innerHTML = '<span class="today-label">Today:</span> ' + formattedDate;
+      // Find current week in academic calendar
+      let currentWeek = null;
+      for (let i = 0; i < calendarData.length; i++) {
+        const weekStartDate = new Date(calendarData[i].week_starting);
+        // If this is the last entry, set end date to one week later
+        let weekEndDate;
+        if (i < calendarData.length - 1) {
+          weekEndDate = new Date(calendarData[i + 1].week_starting);
+        } else {
+          weekEndDate = new Date(weekStartDate);
+          weekEndDate.setDate(weekEndDate.getDate() + 7);
+        }
+        // If current date is between week starting and next week starting
+        if (currentDate >= weekStartDate && currentDate < weekEndDate) {
+          currentWeek = calendarData[i];
+          break;
+        }
+      }
+      if (currentWeek) {
+        weekDisplay.textContent = `Week ${currentWeek.learning_week}`;
+        semesterDisplay.textContent = `Semester ${currentWeek.semester}`;
+      } else {
+        weekDisplay.textContent = "Break";
+        semesterDisplay.textContent = "Period";
+      }
+    }
+    // Update immediately and then every minute
+    updateCalendarInfo();
+    setInterval(updateCalendarInfo, 60000);
+  </script>
+</body>
+
+</html>
